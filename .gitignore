@@ -1,0 +1,12 @@
+# Dependencies
+/node_modules
+/agri-ledger-backend/node_modules
+/agri-ledger-frontend/node_modules
+
+# Build folder
+/agri-ledger-frontend/build
+
+# Misc
+.DS_Store
+npm-debug.log
+.env
