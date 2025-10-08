@@ -8,6 +8,8 @@ import FarmerDetailPage from './pages/FarmerDetailPage';
 import RegisterPage from './pages/RegisterPage'; // Import new page
 import LoginPage from './pages/LoginPage';       // Import new page
 import ProtectedRoute from './components/ProtectedRoute'; // Import protected route
+import RegisterPage from './pages/RegisterPage'; // Add this import at the top
+
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           
 

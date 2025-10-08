@@ -7,7 +7,7 @@ const db = require('./db');
 
 const app = express();
 const PORT = 4000;
-const JWT_SECRET = 'your-super-secret-key-that-is-long-and-random';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 app.use(cors());
 app.use(express.json());
@@ -20,12 +20,49 @@ const verifyToken = (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
+    req.user = decoded;// Add this block back to server.js
+app.post('/api/register', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!(username && password)) {
+      return res.status(400).send('All input is required');
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await db.query(
+      'INSERT INTO app_users (username, password_hash) VALUES ($1, $2) RETURNING id, username',
+      [username, hashedPassword]
+    );
+    res.status(201).json(newUser.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error registering user');
+  }
+});
   } catch (err) {
     return res.status(401).send('Invalid Token');
   }
   return next();
 };
+
+
+// Add this block back to server.js
+app.post('/api/register', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!(username && password)) {
+      return res.status(400).send('All input is required');
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await db.query(
+      'INSERT INTO app_users (username, password_hash) VALUES ($1, $2) RETURNING id, username',
+      [username, hashedPassword]
+    );
+    res.status(201).json(newUser.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Error registering user');
+  }
+});
 
 // --- Authentication Routes ---
 app.post('/api/login', async (req, res) => {
