@@ -13,6 +13,7 @@ function RegisterPage() {
     event.preventDefault();
     try {
       await api.post('/register', { username, password });
+      alert('Registration successful! Please login.');
       navigate('/login'); // Redirect to login page after successful registration
     } catch (error) {
       console.error('Registration failed:', error);
